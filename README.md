@@ -1,2 +1,2 @@
-# TypeWriterEffect-Arbalet
-Type Writer Effect for Arbalet
+# ChatSimulation-Arbalet
+Basic Chat Simulation for Arbalet
