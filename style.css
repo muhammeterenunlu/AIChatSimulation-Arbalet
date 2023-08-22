@@ -1,0 +1,84 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.chatbox {
+  background-color: #fff;
+  border-radius: 5px;
+  width: 600px;
+  height: 500px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.input-box {
+  padding: 10px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #fafafa;
+}
+
+input[type='text'] {
+  padding: 10px 20px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.user,
+.bot {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: fit-content;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user {
+  align-self: flex-end;
+  background-color: #007aff;
+  color: #fff;
+}
+
+.bot {
+  align-self: flex-start;
+  background-color: #e9e9e9;
+}
+
+.cursor {
+  display: inline-block;
+  background-color: rgb(150, 150, 150);
+  width: 10px;
+  height: 20px;
+  animation: blink 1s infinite;
+  z-index: 1000;
+  position: relative;
+  vertical-align: -3px;
+}
+
+@keyframes blink {
+  0%,
+  409% {
+    background-color: rgb(150, 150, 150);
+  }
+  50%,
+  100% {
+    background-color: transparent;
+  }
+}
