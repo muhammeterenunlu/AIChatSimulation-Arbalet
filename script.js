@@ -64,8 +64,8 @@ function clearSession() {
 }
 
 function startQA(qa) {
-  typeMessage(createMessageElement('user', 'User: '), qa.question, () => {
-    typeMessage(createMessageElement('bot', 'Arbalet: '), qa.answer);
+  typeMessage(createMessageElement('user'), qa.question, () => {
+    typeMessage(createMessageElement('bot'), qa.answer);
   });
 }
 
