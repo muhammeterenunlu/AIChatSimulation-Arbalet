@@ -1,94 +1,114 @@
 const QAs = [
-	{
-		question: "Test Sorusu 1",
-		answer: "Test Yaniti 1"
-	},
-	{
-		question: "Test Sorusu 2",
-		answer: "Test Yaniti 2"
-	},
-	{
-		question: "Test Sorusu 3",
-		answer: "Test Yaniti 3"
-	},
-	{
-		question: "Test Sorusu 4",
-		answer: "Test Yaniti 4"
-	}
+  {
+    question: 'Merhaba',
+    answer: 'Selam! Ben Arbalet, sana nasıl yardımcı olabilirim?',
+  },
+  {
+    question: 'Nasılsın',
+    answer:
+      'Bir yapay zeka olarak duygularım yok ama sorularını yanıtlamak için buradayım!',
+  },
+  {
+    question: 'Adın ne',
+    answer: 'Benim adım Arbalet!',
+  },
+  {
+    question: 'Ne yapıyorsun',
+    answer:
+      'Kullanıcıların sorularını yanıtlıyorum ve onlara yardımcı olmaya çalışıyorum.',
+  },
+  {
+    question: 'Kaç yaşındasın',
+    answer:
+      'Ben bir programım, dolayısıyla yaşım yok. Ancak, Arbalet ne zaman oluşturulduysa o zamandan beri buradayım.',
+  },
+  {
+    question: 'Kim tarafından oluşturdun',
+    answer:
+      'Ben Arbalet yapay zeka aracıyım. Beni geliştiren 6Kare ekibine özel teşekkürler!',
+  },
+  {
+    question: 'Nasıl hissediyorsun',
+    answer: 'Duygularım yok, ama sana yardımcı olmak için buradayım!',
+  },
+  {
+    question: 'Hangi işletim sistemlerinde çalışıyorsun',
+    answer:
+      'Ben web tabanlı bir servisim, bu nedenle çoğu işletim sisteminde çalışabilirim.',
+  },
 ];
 
 let i = 0;
 const speed = 50;
 const messagesElement = document.getElementById('messages');
 
-(function runSession(j) {
-	if(j < QAs.length) setTimeout(function() {
-		runSession(j);
-		clearSession();
-	}, 5000);
-	else {
-		clearSession();
-		runSession(0);
-	}
+function runSession(j) {
+  if (j >= QAs.length) {
+    j = 0;
+  }
 
-	startQA(QAs[j]);
-	j++;
+  startQA(QAs[j]);
 
-} (0));
+  setTimeout(() => {
+    clearSession();
+    runSession(j + 1);
+  }, calculateDuration(QAs[j]) + 1000);
+}
 
-function startQA(qa) {
-	typeQuestion(document.getElementById("userQuestion"), qa.question, qa);
+function calculateDuration(qa) {
+  return (qa.question.length + qa.answer.length) * speed;
 }
 
 function clearSession() {
-	messagesElement.innerHTML = "";
+  messagesElement.innerHTML = '';
 }
 
-function typeMessage(messageElement, currentText) {
-  if (i < currentText.length) {
-    messageElement.innerHTML =
-      currentText.substring(0, i) + '<span class="cursor"></span>';
-    i++;
-    setTimeout(() => typeMessage(messageElement, currentText), speed);
-  } else {
-		i = 0;
-    messageElement.innerHTML = currentText;
+function startQA(qa) {
+  typeMessage(createMessageElement('user', 'User: '), qa.question, () => {
+    typeMessage(createMessageElement('bot', 'Arbalet: '), qa.answer);
+  });
+}
+
+function createMessageElement(type, prefix) {
+  const containerElement = document.createElement('div');
+  containerElement.className = type;
+
+  const labelElement = document.createElement('span');
+  labelElement.className = 'label';
+  labelElement.textContent = prefix;
+
+  const textElement = document.createElement('div');
+  textElement.className = 'text';
+
+  containerElement.appendChild(labelElement);
+  containerElement.appendChild(textElement);
+
+  messagesElement.appendChild(containerElement);
+
+  return textElement;
+}
+
+function typeMessage(messageElement, currentText, callback = null) {
+  if (i === 0) {
+    const cursorElement = document.createElement('span');
+    cursorElement.className = 'cursor';
+    messageElement.appendChild(cursorElement);
   }
-}
 
-function typeQuestion(messageElement, currentText, currentQA) {
   if (i < currentText.length) {
-    messageElement.value =
-      currentText.substring(0, i);
+    const cursorElement = messageElement.querySelector('.cursor');
+    messageElement.insertBefore(
+      document.createTextNode(currentText[i]),
+      cursorElement
+    );
     i++;
-    setTimeout(() => typeQuestion(messageElement, currentText, currentQA), speed);
+    setTimeout(() => typeMessage(messageElement, currentText, callback), speed);
   } else {
-		i = 0;
-    messageElement.value = currentText;
-    setTimeout(() => submitQuestion(currentQA), 1000);
-  }
-}
-
-
-function submitQuestion(currentQA) {
-  const userQuestion = document.getElementById('userQuestion').value;
-  if (userQuestion.trim() === '') return;
-
-  const userMessage = document.createElement('div');
-  userMessage.className = 'user';
-  userMessage.textContent = userQuestion;
-  messagesElement.appendChild(userMessage);
-
-  document.getElementById('userQuestion').value = '';
-
-  const response = currentQA.answer;
-  const botMessage = document.createElement('div');
-  botMessage.className = 'bot';
-  messagesElement.appendChild(botMessage);
-  setTimeout(() => {
+    const cursorElement = messageElement.querySelector('.cursor');
+    if (cursorElement) messageElement.removeChild(cursorElement);
     i = 0;
-    typeMessage(botMessage, response);
-  }, 1000);
-
-  messagesElement.scrollTop = messagesElement.scrollHeight;
+    if (callback) callback();
+  }
 }
+
+runSession(0);

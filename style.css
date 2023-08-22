@@ -8,11 +8,20 @@ body {
   margin: 0;
 }
 
+.header {
+  background-color: #ccc;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: bold;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
 .chatbox {
   background-color: #fff;
   border-radius: 5px;
-  width: 600px;
-  height: 500px;
+  width: 500px;
+  height: 300px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -24,58 +33,53 @@ body {
   flex: 1;
 }
 
-.input-box {
-  padding: 10px;
-  border-top: 1px solid #e0e0e0;
-  background-color: #fafafa;
-}
-
-input[type='text'] {
-  padding: 10px 20px;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  outline: none;
-  box-sizing: border-box;
-}
-
 .user,
 .bot {
-  margin: 10px 0;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user .label,
+.bot .label {
+  font-weight: bold;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.user .text,
+.bot .text {
   padding: 10px;
   border-radius: 5px;
-  width: fit-content;
-  max-width: 80%;
+  max-width: 90%;
   word-wrap: break-word;
 }
 
-.user {
-  align-self: flex-end;
+.user .text {
   background-color: #007aff;
   color: #fff;
+  align-self: flex-end;
 }
 
-.bot {
+.bot .text {
+  background-color: #ccc;
   align-self: flex-start;
-  background-color: #e9e9e9;
 }
 
 .cursor {
   display: inline-block;
-  background-color: rgb(150, 150, 150);
-  width: 10px;
+  background-color: rgb(0, 0, 0);
+  width: 5px;
   height: 20px;
-  animation: blink 1s infinite;
-  z-index: 1000;
-  position: relative;
   vertical-align: -3px;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {
   0%,
-  409% {
-    background-color: rgb(150, 150, 150);
+  40% {
+    background-color: rgb(124, 124, 124);
   }
   50%,
   100% {
