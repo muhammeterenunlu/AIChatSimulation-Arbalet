@@ -23,7 +23,7 @@ const QAs = [
       'Ben bir programım, dolayısıyla yaşım yok. Ancak, Arbalet ne zaman oluşturulduysa o zamandan beri buradayım.',
   },
   {
-    question: 'Kim tarafından oluşturdun',
+    question: 'Kim tarafından oluşturuldun',
     answer:
       'Ben Arbalet yapay zeka aracıyım. Beni geliştiren 6Kare ekibine özel teşekkürler!',
   },
