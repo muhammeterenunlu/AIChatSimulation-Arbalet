@@ -82,33 +82,31 @@ function createMessageElement(type, prefix) {
 
   containerElement.appendChild(labelElement);
   containerElement.appendChild(textElement);
-
   messagesElement.appendChild(containerElement);
 
   return textElement;
 }
 
 function typeMessage(messageElement, currentText, callback = null) {
-  if (i === 0) {
-    const cursorElement = document.createElement('span');
-    cursorElement.className = 'cursor';
-    messageElement.appendChild(cursorElement);
-  }
+  const cursorElement = document.createElement('span');
+  cursorElement.className = 'cursor';
+  messageElement.appendChild(cursorElement);
 
-  if (i < currentText.length) {
-    const cursorElement = messageElement.querySelector('.cursor');
-    messageElement.insertBefore(
-      document.createTextNode(currentText[i]),
-      cursorElement
-    );
-    i++;
-    setTimeout(() => typeMessage(messageElement, currentText, callback), speed);
-  } else {
-    const cursorElement = messageElement.querySelector('.cursor');
-    if (cursorElement) messageElement.removeChild(cursorElement);
-    i = 0;
-    if (callback) callback();
+  let i = 0;
+  function type() {
+    if (i < currentText.length) {
+      messageElement.insertBefore(
+        document.createTextNode(currentText[i]),
+        cursorElement
+      );
+      i++;
+      setTimeout(type, speed);
+    } else {
+      messageElement.removeChild(cursorElement);
+      if (callback) callback();
+    }
   }
+  type();
 }
 
 runSession(0);
