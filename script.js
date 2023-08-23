@@ -119,8 +119,13 @@ function typeMessage(messageElement, currentText, callback = null) {
       );
       i++;
       setTimeout(type, speed);
-    } else {
-      messageElement.removeChild(cursorElement);
+    }
+    // Yazma tamamlandığında imleci kaldırmak yerine cursor ile aynı boyutta ancak görünmez olan bir fake cursor yerleştiriyoruz.
+    // Bu durum yazı yazma işlemi bittiğinde text divinin küçülmesini engelliyor.
+    else {
+      const fakeCursorElement = document.createElement('span');
+      fakeCursorElement.className = 'fake-cursor';
+      messageElement.replaceChild(fakeCursorElement, cursorElement);
       if (callback) callback();
     }
   }
