@@ -1,3 +1,4 @@
+// Soru ve cevap arrayi
 const QAs = [
   {
     question: 'Merhaba',
@@ -38,37 +39,51 @@ const QAs = [
   },
 ];
 
+// Başlangıç indeksini tanımlama
 let i = 0;
+
+// Karakter başına yazma hızını tanımlama (milisaniye cinsinden)
 const speed = 50;
+
+// Mesajların gösterileceği HTML elemanını alır.
 const messagesElement = document.getElementById('messages');
 
+// Chat oturumunu başlatan ana fonksiyon.
 function runSession(j) {
+  // Eğer QAs dizisinin sonuna gelindi ise başa dön.
   if (j >= QAs.length) {
     j = 0;
   }
 
-  startQA(QAs[j]);
-
-  setTimeout(() => {
-    clearSession();
-    runSession(j + 1);
-  }, calculateDuration(QAs[j]) + 1000);
+  // Soru-cevap oturumunu başlat.
+  startQA(QAs[j], () => {
+    // Soru-cevap oturumu tamamlandığında yeni oturuma başlamak için bu kısmı kullanıyoruz.
+    setTimeout(() => {
+      clearSession();
+      runSession(j + 1);
+    }, 1000);
+  });
 }
 
+// Belirli bir soru ve cevabın toplam süresini hesaplar.
 function calculateDuration(qa) {
   return (qa.question.length + qa.answer.length) * speed;
 }
 
+// Mesajları sıfırlar.
 function clearSession() {
   messagesElement.innerHTML = '';
 }
 
-function startQA(qa) {
+// Belirli bir soru ve cevabı ekranda yazdırır.
+function startQA(qa, done) {
   typeMessage(createMessageElement('user'), qa.question, () => {
-    typeMessage(createMessageElement('bot'), qa.answer);
+    typeMessage(createMessageElement('bot'), qa.answer, done); // Botun cevabını yazdırdıktan sonra `done` fonksiyonunu çağırıyoruz
   });
 }
 
+// Mesaj kutusu oluşturan fonksiyon.
+// Gelen mesaj tipine göre (kullanıcı veya bot) uygun bir mesaj kutusu oluşturur.
 function createMessageElement(type, prefix) {
   const containerElement = document.createElement('div');
   containerElement.className = type;
@@ -82,11 +97,14 @@ function createMessageElement(type, prefix) {
 
   containerElement.appendChild(labelElement);
   containerElement.appendChild(textElement);
+
   messagesElement.appendChild(containerElement);
 
   return textElement;
 }
 
+// Belirli bir mesajı belirli bir hızda yazdırır.
+// Mesaj yazdırma tamamlandığında isteğe bağlı bir geri çağırma fonksiyonunu çalıştırır.
 function typeMessage(messageElement, currentText, callback = null) {
   const cursorElement = document.createElement('span');
   cursorElement.className = 'cursor';
@@ -109,4 +127,5 @@ function typeMessage(messageElement, currentText, callback = null) {
   type();
 }
 
+// Chat oturumunu başlat.
 runSession(0);
